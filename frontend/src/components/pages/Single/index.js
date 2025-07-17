@@ -8,7 +8,6 @@ export const Single = () => {
     useEffect(() => {
         let url = `${process.env.REACT_APP_API_ROOT}/posts/${id}`;
         axios.get(url).then(res => {
-            console.log(res);
             setPost(res.data);
         }).catch(err => {
             console.log("error: ", err);
