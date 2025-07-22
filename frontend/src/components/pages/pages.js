@@ -5,6 +5,8 @@ import Posts from './Posts/index';
 import Navbar from '../common/Navbar/index';
 import Single from './Single';
 import Login from './Login';
+import AddPost from './AddPost';
+import Logout from './Logout';
 
 const Pages = () => {
   return (
@@ -15,6 +17,8 @@ const Pages = () => {
             <Route path='/posts' element={ <Posts />}/>
             <Route path='/posts/:id' element={ <Single />}/>
             <Route path='/login' element={ <Login /> } />
+            <Route path='/add-post' element={ <AddPost/> } />
+            <Route path='/logout' element={ <Logout/> } />
         </Routes>
     </div>
   )

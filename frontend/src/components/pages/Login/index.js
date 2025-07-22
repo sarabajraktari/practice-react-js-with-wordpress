@@ -2,8 +2,10 @@ import React from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
     const formik = useFormik({
         // Initial values
         initialValues: {
@@ -25,9 +27,10 @@ const Login = () => {
                 'password': password,
             }).then((res) => {
                 console.log('response', res);
-                if(res.status === 200 && res.statusText === "OK") {
+                if(res.status === 200 && res.statusText === 'OK') {
                     localStorage.setItem('user', JSON.stringify(res.data));
-                    alert(res.data.user_nicename)
+                    alert(`Welcome, ${res.data.user_nicename}`);
+                    navigate('/'); // Redirect after login
                 }
             }).catch((err) => {
                 console.log('error: ', err.message);
