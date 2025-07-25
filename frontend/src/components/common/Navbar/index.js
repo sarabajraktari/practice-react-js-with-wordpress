@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../../../redux/slice/authSlice';
 
 const Navbar = () => {
-  const [auth, setAuth] = useState(localStorage.getItem('user'));
-  const location = useLocation(); // listens to route changes
-
-  useEffect(() => {
-    // Every time the route changes, check auth status
-    setAuth(localStorage.getItem('user'));
-  }, [location]);
+  const dispatch = useDispatch();
+  const authUser = useSelector((state) => state.auth.user);
 
   return (
     <div className='p-5'>
       <ul className='flex gap-5 justify-end'>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/posts">Posts</Link></li>
-        { !auth ? (
+        { !authUser?.token ? (
           <li><Link to="/login">Login</Link></li>
         ) : (
           <>
-            <li><Link to="/logout">Logout</Link></li>
+            <li><button onClick={() => dispatch(logout())}>Logout</button></li>
             <li><Link to="/add-post">Add Post</Link></li>
+            <li><Link to="/profile">Hi {authUser.user_display_name }</Link></li>
           </>
         )}
       </ul>

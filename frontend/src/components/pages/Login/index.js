@@ -1,16 +1,16 @@
 import React from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../redux/slice/authSlice';
 const Login = () => {
-    const navigate = useNavigate();
+    const auth = useSelector(state => state.auth)
+    const dispatch = useDispatch();
     const formik = useFormik({
         // Initial values
         initialValues: {
-            email: '',
-            password: ''
+            email: 'admin@gmail.com',
+            password: 'admin'
         },
 
         // Validation Schema
@@ -21,20 +21,8 @@ const Login = () => {
 
         // On Submit
         onSubmit: (data) => {
-            const { email, password } = data;
-            axios.post(`${process.env.REACT_APP_API_AUTH_TOKEN}`, {
-                'username': email,
-                'password': password,
-            }).then((res) => {
-                console.log('response', res);
-                if(res.status === 200 && res.statusText === 'OK') {
-                    localStorage.setItem('user', JSON.stringify(res.data));
-                    alert(`Welcome, ${res.data.user_nicename}`);
-                    navigate('/'); // Redirect after login
-                }
-            }).catch((err) => {
-                console.log('error: ', err.message);
-            });
+            dispatch(login(data));
+
         }
     });
 
@@ -80,6 +68,7 @@ const Login = () => {
                                     className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full disabled:bg-blue-500 disabled:text-slate-100 disabled:cursor-wait"
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
+                                    disabled={auth.isLoading}
                                 >
                                     Login
                                 </button>
